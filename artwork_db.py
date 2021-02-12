@@ -1,6 +1,7 @@
+import os
 import sqlite3
 
-db = 'artwork_catalog.sqlite'
+db = os.path.join('database', 'artwork_catalog.db')
 
 
 def create_artwork_table():
