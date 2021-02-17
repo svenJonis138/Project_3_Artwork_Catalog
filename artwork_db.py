@@ -1,4 +1,4 @@
-import os
+
 import sqlite3
 
 from config import db_path
@@ -7,30 +7,31 @@ from config import db_path
 def create_tables():
     """create the artwork table"""
     with sqlite3.connect(db_path) as conn:
+        print(db_path)
         conn.execute('CREATE TABLE IF NOT EXISTS artwork '
-                     '(artist_name TEXT, '
+                     '(artist_name TEXT NOT NULL, '
                      'art_work_name TEXT UNIQUE, '
                      'price INTEGER, '
                      'available BOOLEAN)')
         """create the artists table"""
         conn.execute('CREATE TABLE IF NOT EXISTS artists '
-                     '(artist_name TEXT, '
+                     '(artist_name TEXT NOT NULL, '
                      'email TEXT UNIQUE)')
     conn.close()
 
 
-def create_test_db():
-    with sqlite3.connect(os.path.join('database', 'test_artwork.db')) as conn:
-        conn.execute('CREATE TABLE IF NOT EXISTS artwork '
-                     '(artist_name TEXT, '
-                     'art_work_name TEXT UNIQUE, '
-                     'price INTEGER, '
-                     'available BOOLEAN)')
-        """create the artists table"""
-        conn.execute('CREATE TABLE IF NOT EXISTS artists '
-                     '(artist_name TEXT, '
-                     'email TEXT UNIQUE)')
-    conn.close()
+# def create_test_db():
+#     with sqlite3.connect(os.path.join('database', 'test_artwork.db')) as conn:
+#         conn.execute('CREATE TABLE IF NOT EXISTS artwork '
+#                      '(artist_name TEXT, '
+#                      'art_work_name TEXT UNIQUE, '
+#                      'price INTEGER, '
+#                      'available BOOLEAN)')
+#         """create the artists table"""
+#         conn.execute('CREATE TABLE IF NOT EXISTS artists '
+#                      '(artist_name TEXT, '
+#                      'email TEXT UNIQUE)')
+#     conn.close()
 
 
 def add_artist(artist):
@@ -51,3 +52,4 @@ def add_artist(artist):
 class ArtDbError(Exception):
     """for any db errors"""
     pass
+
