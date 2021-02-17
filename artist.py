@@ -4,3 +4,5 @@ class Artist:
         self.email = email
         self.id = id
 
+    def __str__(self):
+        return f'{self.artist_name}, {self.email}'

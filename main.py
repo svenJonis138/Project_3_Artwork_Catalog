@@ -7,8 +7,11 @@ db_path = os.path.join('database', 'test_artwork_catalog.db')
 
 
 def main():
-
-    artwork_db.create_tables()
+    #
+    # artwork_db.create_tables()
+    artists_in_db = artwork_db.get_all_artists()
+    for name in artists_in_db:
+        print(str(name))
     name = input("Enter new artist name: ")
     email = input("enter email: ")
     new_artist = Artist(name, email)

@@ -1,6 +1,6 @@
 
 import sqlite3
-
+import artist
 from config import db_path
 
 
@@ -20,33 +20,26 @@ def create_tables():
     conn.close()
 
 
-# def create_test_db():
-#     with sqlite3.connect(os.path.join('database', 'test_artwork.db')) as conn:
-#         conn.execute('CREATE TABLE IF NOT EXISTS artwork '
-#                      '(artist_name TEXT, '
-#                      'art_work_name TEXT UNIQUE, '
-#                      'price INTEGER, '
-#                      'available BOOLEAN)')
-#         """create the artists table"""
-#         conn.execute('CREATE TABLE IF NOT EXISTS artists '
-#                      '(artist_name TEXT, '
-#                      'email TEXT UNIQUE)')
-#     conn.close()
-
-
-def add_artist(artist):
-
+def add_artist(new_artist):
+    """adds a new artist's info into artist table if not already there"""
     insert_sql = 'INSERT INTO artists (artist_name, email) VALUES (?, ?)'
     try:
         with sqlite3.connect(db_path) as conn:
-            res = conn.execute(insert_sql, (artist.artist_name, artist.email))
+            res = conn.execute(insert_sql, (new_artist.artist_name, new_artist.artist.email))
             new_id = res.lastrowid  # Get the ID of the new row in the table
             artist.id = new_id  # Set this artist's ID
         conn.close()
     except sqlite3.IntegrityError as e:
-        raise ArtDbError(f'Error - this artist is already in the database. {artist}') from e
-    # finally:
+        raise ArtDbError(f'Error - this artist is already in the database. {new_artist}') from e
 
+
+def get_all_artists():
+    """Displays all artists currently in db"""
+    con = sqlite3.connect(db_path)
+    artists_cursor = con.execute('SELECT * FROM artists')
+    artists = [artist.Artist(*row) for row in artists_cursor.fetchall() ]
+    con.close()
+    return artists
 
 
 class ArtDbError(Exception):
