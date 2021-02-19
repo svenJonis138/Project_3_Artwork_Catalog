@@ -6,5 +6,6 @@ class Artwork:
         self.available = available
 
     def __str__(self):
-        return f'{self.artist_name}, {self.art_work_name}' \
+
+        return f'{self.artist_name}, {self.art_work_name}, ' \
                f'{self.price}, available = {self.available}.'
