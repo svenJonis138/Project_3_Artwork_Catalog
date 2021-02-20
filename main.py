@@ -9,7 +9,10 @@ db_path = os.path.join('database', 'test_artwork_catalog.db')
 
 
 def main():
-    menu.display_menu()
+    artwork_db.create_tables()
+    while True:
+        menu.display_menu()
+
 
 if __name__ == '__main__':
     main()

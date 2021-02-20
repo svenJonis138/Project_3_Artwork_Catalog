@@ -32,14 +32,17 @@ def choice_valid(new_choice):
 def choice_made(choice):
     """once choice has been validated, calls the appropriate function"""
     if choice == 1:
-        controller.add_new_artist()
+        artist_name = controller.get_artist_name()
+        controller.add_new_artist(artist_name)
     elif choice == 2:
-        return 2
+        artist_name = controller.get_artist_name()
+        controller.display_artist_complete_portfolio(artist_name)
     elif choice == 3:
-        return 3
+        artist_name = controller.get_artist_name()
+        controller.display_artist_available_portfolio(artist_name)
     elif choice == 4:
-        return 4
+        controller.add_new_artwork()
     elif choice == 5:
-        return 5
+        controller.get_artwork_to_delete()
     elif choice == 6:
         return 6
