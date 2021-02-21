@@ -2,14 +2,18 @@ import artwork_db
 import controls_utils
 from artist import Artist
 from artwork import Artwork
+"""this module handles all user input for functions, sends data to controls.utils for validation and
+when cleared does all the database function calls"""
 
 
 def get_artist_name():
+    """returns artist name"""
     artist_name = input('What is the name of the artist? ')
     return artist_name
 
 
 def get_artist_email():
+    """returns artist email if it is unique"""
     artist_email = input('Please enter artist\'s email: ')
     while controls_utils.artist_email_not_unique(artist_email):
         print('Artist\'s email must be unique. ')
@@ -18,6 +22,7 @@ def get_artist_email():
 
 
 def get_new_artwork_name():
+    """returns artwork name if it is unique for creating new records"""
     artwork_name = input("Please enter title of artwork: ")
     while controls_utils.artwork_name_is_unique(artwork_name):
         print('Artwork name is taken')
@@ -26,6 +31,7 @@ def get_new_artwork_name():
 
 
 def get_artwork_name():
+    """returns artwork name already in db for accessing artwork for functions"""
     artwork_name = input("Please enter title of artwork: ")
     if not controls_utils.artwork_name_is_unique(artwork_name):
         return artwork_name
@@ -33,8 +39,8 @@ def get_artwork_name():
         print('artwork not found')
 
 
-
 def get_price():
+    """gets the price and checks that it is the correct data type, then parses it into int"""
     price = input('Please enter the price of the piece: ')
     while not controls_utils.price_is_right(price):
         print('Price must be a numerical value ')
@@ -43,13 +49,13 @@ def get_price():
 
 
 def add_new_artwork():
+    """checks if artist name is already registered and if not, registers them before adding new artwork"""
     artist_name = get_artist_name()
     if not controls_utils.artist_already_in_db(artist_name):
         print('Artist not registered, creating new registration. ')
         email = get_artist_email()
         new_artist = Artist(artist_name, email)
         artwork_db.add_artist(new_artist)
-
     artwork_name = get_new_artwork_name()
     price = get_price()
     available = True
@@ -58,6 +64,7 @@ def add_new_artwork():
 
 
 def add_new_artist(artist_name):
+    """adds new artist to db if they are not already in"""
     if controls_utils.artist_already_in_db(artist_name):
         print('This artist is already in database')
     else:
@@ -67,6 +74,7 @@ def add_new_artist(artist_name):
 
 
 def display_artist_complete_portfolio(artist_name):
+    """checks if artist is in db, if so displays their works sold and unsold"""
     if controls_utils.artist_has_work_in_db(artist_name):
         results = artwork_db.get_all_artwork_from_one_artist(artist_name)
         for piece in results:
@@ -76,6 +84,7 @@ def display_artist_complete_portfolio(artist_name):
 
 
 def display_artist_available_portfolio(artist_name):
+    """checks if artist is in db, if so displays their works that are unsold"""
     if controls_utils.artist_has_work_in_db(artist_name):
         results = artwork_db.get_available_artwork_from_one_artist(artist_name)
         if results:
@@ -88,6 +97,7 @@ def display_artist_available_portfolio(artist_name):
 
 
 def get_artwork_to_delete():
+    """gets name of artwork to delete and checks to make sure before deleting"""
     artwork = input('Which artwork would you like to delete? ')
     while not controls_utils.artwork_exists(artwork):
         artwork = input('Which artwork would you like to delete? ')
@@ -104,15 +114,14 @@ def get_artwork_to_delete():
             break
 
 
-
-
 def delete_artwork(artwork):
+    """does the actual deletion, separated for testing"""
     artwork_db.delete_artwork(artwork)
 
 
 def change_availability():
+    """after confirming the artwork exists and is not already sold, changes status to sold"""
     artwork_sold = get_artwork_name()
-
     if not controls_utils.artwork_exists(artwork_sold):
         print('No record of that piece of art. ')
     else:
@@ -133,11 +142,13 @@ def change_availability():
 
 
 def mark_as_sold(artwork):
+    """does the actual change in db, separated for testing"""
     artwork_db.update_artwork(artwork)
     print(artwork + ' has been marked as sold. ')
 
 
 def display_all():
+    """prints all artwork for testing purposes"""
     results = artwork_db.get_all_artwork()
     for artist in results:
         print(artist)

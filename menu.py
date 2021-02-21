@@ -1,4 +1,6 @@
 import controller
+
+
 def display_menu():
     """sets up UI menu"""
     print('\n')

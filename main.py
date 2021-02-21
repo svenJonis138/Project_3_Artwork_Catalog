@@ -1,14 +1,9 @@
-import artwork_db
-import os
-from artist import Artist
-from config import db_path
-from artwork import Artwork
 import menu
-
-db_path = os.path.join('database', 'test_artwork_catalog.db')
+import artwork_db
 
 
 def main():
+    """sets up tables if necessary and sets up menu to continue to pop up until user hits Q """
     artwork_db.create_tables()
     while True:
         menu.display_menu()

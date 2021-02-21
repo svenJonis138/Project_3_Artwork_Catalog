@@ -2,6 +2,7 @@ import sqlite3
 import artist
 from artwork import Artwork
 from config import db_path
+"""This module holds all database code"""
 
 
 def create_tables():
@@ -44,15 +45,17 @@ def get_all_artists():
 
 def delete_artwork(artwork_to_delete):
     """deletes specified artwork (must match spelling)"""
+    delete_sql = 'DELETE FROM artwork WHERE artwork_name LIKE ? COLLATE NOCASE'
     try:
         with sqlite3.connect(db_path) as conn:
-            conn.execute('DELETE FROM artwork WHERE artwork_name LIKE ? COLLATE NOCASE', (artwork_to_delete,))
+            conn.execute(delete_sql, (artwork_to_delete,))
         conn.close()
     except sqlite3.IntegrityError as e:
         raise ArtDbError(f'Error - this artwork was not found in the database. {artist}') from e
 
 
 def add_artwork(new_artwork):
+    """inserts an artwork into the database"""
     insert_sql = 'INSERT INTO artwork (artist_name, artwork_name, price, available) VALUES (?, ?, ?, ?)'
     try:
         with sqlite3.connect(db_path) as conn:
@@ -66,6 +69,7 @@ def add_artwork(new_artwork):
 
 
 def get_all_artwork():
+    """this will return all artwork in db for use in data validation"""
     con = sqlite3.connect(db_path)
     artwork_cursor = con.execute('SELECT * FROM artwork')
     artwork = [Artwork(*row) for row in artwork_cursor.fetchall()]
@@ -74,7 +78,7 @@ def get_all_artwork():
 
 
 def update_artwork(sold_artwork):
-
+    """this will update an artwork object's availability to sold"""
     update_sql = 'UPDATE artwork SET available = ? WHERE artwork_name = ?'
     try:
         with sqlite3.connect(db_path) as conn:
@@ -85,6 +89,7 @@ def update_artwork(sold_artwork):
 
 
 def get_all_artwork_from_one_artist(given_artist):
+    """this will return all works by a given artist regardless of availability"""
     con = sqlite3.connect(db_path)
     artwork_cursor = con.execute('SELECT * FROM artwork WHERE artist_name LIKE ? COLLATE NOCASE', (given_artist,))
     artwork = [Artwork(*row) for row in artwork_cursor.fetchall()]
@@ -93,6 +98,7 @@ def get_all_artwork_from_one_artist(given_artist):
 
 
 def get_available_artwork_from_one_artist(given_artist):
+    """this will return all artwork from a given artist that is available"""
     con = sqlite3.connect(db_path)
     artwork_cursor = con.execute('SELECT * FROM artwork WHERE (artist_name LIKE ? COLLATE NOCASE'
                                  ' AND available = true )', (given_artist,))

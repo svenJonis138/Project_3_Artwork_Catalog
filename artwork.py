@@ -1,6 +1,8 @@
+"""Artwork class"""
+
+
 class Artwork:
     def __init__(self, artist_name, artwork_name, price, available):
-
         self.artist_name = artist_name
         self.artwork_name = artwork_name
         self.price = price
