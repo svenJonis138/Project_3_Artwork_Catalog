@@ -45,5 +45,5 @@ def choice_made(choice):
     elif choice == 5:
         controller.get_artwork_to_delete()
     elif choice == 6:
-        controller.display_all()
+        controller.change_availability()
 

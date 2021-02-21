@@ -75,10 +75,10 @@ def get_all_artwork():
 
 def update_artwork(sold_artwork):
 
+    update_sql = 'UPDATE artwork SET available = ? WHERE artwork_name = ?'
     try:
         with sqlite3.connect(db_path) as conn:
-            conn.execute('UPDATE artwork SET available = FALSE WHERE'
-                         ' artwork_name = ?', (sold_artwork.art_work_name,))
+            conn.execute(update_sql, (False, sold_artwork))
         conn.close()
     except sqlite3.IntegrityError as e:
         raise ArtDbError(f'Error - this artwork is already marked as sold in the database. {sold_artwork}') from e

@@ -17,12 +17,21 @@ def get_artist_email():
     return artist_email
 
 
-def get_artwork_name():
+def get_new_artwork_name():
     artwork_name = input("Please enter title of artwork: ")
-    while not controls_utils.artwork_name_is_unique(artwork_name):
+    while controls_utils.artwork_name_is_unique(artwork_name):
         print('Artwork name is taken')
         artwork_name = input("Please enter title of artwork: ")
     return artwork_name
+
+
+def get_artwork_name():
+    artwork_name = input("Please enter title of artwork: ")
+    if not controls_utils.artwork_name_is_unique(artwork_name):
+        return artwork_name
+    else:
+        print('artwork not found')
+
 
 
 def get_price():
@@ -41,7 +50,7 @@ def add_new_artwork():
         new_artist = Artist(artist_name, email)
         artwork_db.add_artist(new_artist)
 
-    artwork_name = get_artwork_name()
+    artwork_name = get_new_artwork_name()
     price = get_price()
     available = True
     new_artwork = Artwork(artist_name, artwork_name, price, available)
@@ -83,17 +92,50 @@ def get_artwork_to_delete():
     while not controls_utils.artwork_exists(artwork):
         artwork = input('Which artwork would you like to delete? ')
     artist = controls_utils.name_of_artist(artwork)
-    response = input('Are you sure you want to delete ' + artwork + ' by ' + artist + ' ? ')
+    response = input('Are you sure you want to delete ' + artwork + ' by ' + artist + ' ? Y or N')
+    if response.upper() == 'Y':
+        delete_artwork(artwork)
     while not controls_utils.response_affirmative(response):
         response = input('Are you sure you want to delete '
-                         + artwork + ' by ' + artist + ' ? press X to escape ')
+                         + artwork + ' by ' + artist + ' ? Y or N or press X to escape ')
         if response.upper() == 'X':
             break
-    delete_artwork(artwork)
+        elif response.upper() == 'N':
+            break
+
+
 
 
 def delete_artwork(artwork):
     artwork_db.delete_artwork(artwork)
+
+
+def change_availability():
+    artwork_sold = get_artwork_name()
+
+    if not controls_utils.artwork_exists(artwork_sold):
+        print('No record of that piece of art. ')
+    else:
+        artist = controls_utils.name_of_artist(artwork_sold)
+        if not controls_utils.artwork_available(artwork_sold, artist):
+            print('Sorry that piece has already been sold. ')
+        else:
+            response = input('Mark ' + artwork_sold + ' as sold? Y or N ')
+            if response.upper() == 'Y':
+                mark_as_sold(artwork_sold)
+            while not controls_utils.response_affirmative(response):
+                response = input('Are you sure you want to mark '
+                                 + artwork_sold + ' by ' + artist + ' as sold? Y or N or press X to escape ')
+                if response.upper() == 'X':
+                    break
+                elif response.upper() == 'N':
+                    break
+
+
+def mark_as_sold(artwork):
+    artwork_db.update_artwork(artwork)
+    print(artwork + ' has been marked as sold. ')
+
 
 def display_all():
     results = artwork_db.get_all_artwork()
