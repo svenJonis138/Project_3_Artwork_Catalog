@@ -3,11 +3,13 @@ import artwork_db
 
 def artist_already_in_db(artist_name):
     current_artists = artwork_db.get_all_artists()
+    names = []
     for artist in current_artists:
-        if artist.artist_name.upper() == artist_name.upper():
-            return True
-        else:
-            return False
+        names.append(artist.artist_name)
+    if artist.artist_name.upper() == artist_name.upper():
+        return True
+    else:
+        return False
 
 
 def artist_email_not_unique(artist_email):
@@ -21,11 +23,13 @@ def artist_email_not_unique(artist_email):
 
 def artist_has_work_in_db(artist_name):
     current_artwork = artwork_db.get_all_artwork()
+    names =[]
     for artwork in current_artwork:
-        if artwork.artist_name.upper() == artist_name.upper():
-            return True
-        else:
-            return False
+        names.append(artwork.artist_name)
+    if artist_name in names:
+        return True
+    else:
+        return False
 
 
 def artwork_name_is_unique(artwork_name):

@@ -86,9 +86,16 @@ def get_artwork_to_delete():
     response = input('Are you sure you want to delete ' + artwork + ' by ' + artist + ' ? ')
     while not controls_utils.response_affirmative(response):
         response = input('Are you sure you want to delete '
-                         + artwork + ' by ' + artist + ' ? press X to escape')
+                         + artwork + ' by ' + artist + ' ? press X to escape ')
+        if response.upper() == 'X':
+            break
     delete_artwork(artwork)
 
 
 def delete_artwork(artwork):
     artwork_db.delete_artwork(artwork)
+
+def display_all():
+    results = artwork_db.get_all_artwork()
+    for artist in results:
+        print(artist)
