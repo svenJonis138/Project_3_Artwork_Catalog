@@ -25,16 +25,16 @@ def get_artist_email():
 
 def get_new_artwork_name():
     """returns artwork name if it is unique for creating new records"""
-    artwork_name = input("Please enter title of artwork: ")
+    artwork_name = input('Please enter title of artwork: ')
     while not controls_utils.artwork_name_is_unique(artwork_name):
         print('Artwork name is taken')
-        artwork_name = input("Please enter title of artwork: ")
+        artwork_name = input('Please enter title of artwork: ')
     return artwork_name
 
 
 def get_artwork_name():
     """returns artwork name already in db for accessing artwork for functions"""
-    artwork_name = input("Please enter title of artwork: ")
+    artwork_name = input('Please enter title of artwork: ')
     if not controls_utils.artwork_name_is_unique(artwork_name):
         return artwork_name
     else:

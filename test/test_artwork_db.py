@@ -90,6 +90,27 @@ class TestArtWorkDB(TestCase):
         result = artwork_db.get_all_artwork()
         self.assertEquals(1, len(result))
 
+    def test_get_all_work_sold_and_unsold(self):
+
+        aw1 = Artwork('Banksy', 'Rats', 138831, True)
+        aw2 = Artwork('Banksy', 'Rats2', 138831, False)
+        aw3 = Artwork('Banksy', 'Rats3', 138831, True)
+        artwork_db.add_artwork(aw1)
+        artwork_db.add_artwork(aw2)
+        artwork_db.add_artwork(aw3)
+        total_arts = artwork_db.get_all_artwork_from_one_artist('Banksy')
+        self.assertEquals(3, len(total_arts))
+
+    def test_get_all_available_art(self):
+        aw1 = Artwork('Baanksy', 'Rats1', 138831, True)
+        aw2 = Artwork('Baanksy', 'Rats21', 138831, False)
+        aw3 = Artwork('Baanksy', 'Rats31', 138831, True)
+        artwork_db.add_artwork(aw1)
+        artwork_db.add_artwork(aw2)
+        artwork_db.add_artwork(aw3)
+        total_arts = artwork_db.get_available_artwork_from_one_artist('Baanksy')
+        self.assertEquals(2, len(total_arts))
+
 
 if __name__ == '__main__':
     unittest.main()
