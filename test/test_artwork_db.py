@@ -23,14 +23,6 @@ class TestArtWorkDB(TestCase):
         conn.commit()
         conn.close()
 
-    # def add_test_data_artist(self):
-    #     a1 = Artist('Sven Jonis', 'sven@fake.com')
-    #     a2 = Artist('Seven Joins', 'seven@nofake.com')
-    #     a3 = Artist('Sean Jones', 'seanjonze@gmail.com')
-    #     artwork_db.add_artist(a1)
-    #     artwork_db.add_artist(a2)
-    #     artwork_db.add_artist(a3)
-
     def test_get_all_artists_empty_db(self):
         results = artwork_db.get_all_artists()
         self.assertEquals(0, len(results))
