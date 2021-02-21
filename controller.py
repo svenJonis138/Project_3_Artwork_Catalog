@@ -9,6 +9,8 @@ when cleared does all the database function calls"""
 def get_artist_name():
     """returns artist name"""
     artist_name = input('What is the name of the artist? ')
+    while not artist_name:
+        artist_name = input('What is the name of the artist? ')
     return artist_name
 
 
@@ -24,7 +26,7 @@ def get_artist_email():
 def get_new_artwork_name():
     """returns artwork name if it is unique for creating new records"""
     artwork_name = input("Please enter title of artwork: ")
-    while controls_utils.artwork_name_is_unique(artwork_name):
+    while not controls_utils.artwork_name_is_unique(artwork_name):
         print('Artwork name is taken')
         artwork_name = input("Please enter title of artwork: ")
     return artwork_name
@@ -67,6 +69,7 @@ def add_new_artist(artist_name):
     """adds new artist to db if they are not already in"""
     if controls_utils.artist_already_in_db(artist_name):
         print('This artist is already in database')
+
     else:
         artist_email = get_artist_email()
         new_artist = Artist(artist_name, artist_email)

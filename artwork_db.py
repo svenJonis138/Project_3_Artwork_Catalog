@@ -46,12 +46,13 @@ def get_all_artists():
 def delete_artwork(artwork_to_delete):
     """deletes specified artwork (must match spelling)"""
     delete_sql = 'DELETE FROM artwork WHERE artwork_name LIKE ? COLLATE NOCASE'
-    try:
-        with sqlite3.connect(db_path) as conn:
-            conn.execute(delete_sql, (artwork_to_delete,))
-        conn.close()
-    except sqlite3.IntegrityError as e:
-        raise ArtDbError(f'Error - this artwork was not found in the database. {artist}') from e
+
+    with sqlite3.connect(db_path) as conn:
+        deleted = conn.execute(delete_sql, (artwork_to_delete,))
+        deleted_count = deleted.rowcount
+    conn.close()
+    if deleted_count == 0:
+        raise ArtDbError(f'Artwork {artwork_to_delete} not found. ')
 
 
 def add_artwork(new_artwork):

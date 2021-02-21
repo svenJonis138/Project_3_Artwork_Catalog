@@ -60,20 +60,18 @@ class TestArtWorkDB(TestCase):
         with self.assertRaises(artwork_db.ArtDbError):
             artwork_db.add_artist(a1)
 
-    def test_delete_artist_in_db(self):
-        a1 = Artist('sven', 'sven@fake.com')
-        artwork_db.add_artist(a1)
-        old_results = artwork_db.get_all_artists()
-        artwork_db.delete_artist(a1.artist_name)
+    def test_delete_artwork_in_db(self):
+        a1 = Artwork('sven', 'sven nude', 8311, True)
+        artwork_db.add_artwork(a1)
+        old_results = artwork_db.get_all_artwork()
+        artwork_db.delete_artwork(a1.artwork_name)
         results = artwork_db.get_all_artists()
         self.assertEquals(len(old_results) - 1, len(results))
 
-    # def test_delete_artist_not_in_db(self):
-    #     a1 = Artist('Captain NoFun', 'thecap@nofun.com')
-    #     with self.assertRaises(artwork_db.ArtDbError):
-    #         artwork_db.delete_artist(a1.artist_name)
-
-    # def add_sample_artwork(self):
+    def test_delete_artwork_not_in_db(self):
+        a1 = Artwork('Captain NoFun', 'the cap', 1138, True)
+        with self.assertRaises(artwork_db.ArtDbError):
+            artwork_db.delete_artwork(a1.artwork_name)
 
     def test_get_all_artwork_empty_db(self):
         results = artwork_db.get_all_artists()
@@ -91,6 +89,7 @@ class TestArtWorkDB(TestCase):
         artwork_db.add_artwork(aw1)
         result = artwork_db.get_all_artwork()
         self.assertEquals(1, len(result))
+
 
 if __name__ == '__main__':
     unittest.main()
