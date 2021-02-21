@@ -11,12 +11,13 @@ def create_tables():
         print(db_path)
         conn.execute('CREATE TABLE IF NOT EXISTS artwork '
                      '(artist_name TEXT NOT NULL, '
-                     'artwork_name TEXT UNIQUE, '
+                     'artwork_name TEXT PRIMARY KEY UNIQUE, '
                      'price INTEGER, '
-                     'available BOOLEAN)')
+                     'available BOOLEAN,'
+                     'FOREIGN KEY (artist_name) REFERENCES artists(artist_name))')
         """create the artists table"""
         conn.execute('CREATE TABLE IF NOT EXISTS artists '
-                     '(artist_name TEXT NOT NULL, '
+                     '(artist_name TEXT PRIMARY KEY NOT NULL, '
                      'email TEXT UNIQUE)')
     conn.close()
 
